@@ -259,7 +259,7 @@
         function updateLength(value) {
             currentLength = parseInt(value);
             document.getElementById('lengthDisplay').textContent = currentLength;
-            positions = Array(10).fill();
+            positions = Array(10).fill("");
             updatePositionInputs();
             filterStamps();
         }
@@ -322,14 +322,14 @@
 
         // Positionen zurücksetzen
         function resetPositions() {
-            positions = Array(10).fill();
+            positions = Array(10).fill("");
             updatePositionInputs();
             filterStamps();
         }
 
         // Alles zurücksetzen
         function resetAll() {
-            positions = Array(10).fill();
+            positions = Array(10).fill("");
             frameFilter = 'alle';
             setFrameFilter('alle');
             updatePositionInputs();
