@@ -341,7 +341,7 @@
             let filtered = stamps;
             
             // Nach Buchstaben filtern
-            const hasPositions = positions.some(p => p !== );
+            const hasPositions = positions.some(p => p !== "");
             if (hasPositions) {
                 filtered = filtered.map(stamp => {
                     const result = positionMatch(stamp.text, positions, currentLength);
