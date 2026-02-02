@@ -361,7 +361,7 @@
 
         // Position Matching
         function positionMatch(text, positions, length) {
-            const hasAnyPosition = positions.some(p => p !== );
+            const hasAnyPosition = positions.some(p => p !== "");
             if (!hasAnyPosition) return { matches: true, score: 0, matchCount: 0, positionMatchCount: 0 };
             
             let positionMatchCount = 0;
