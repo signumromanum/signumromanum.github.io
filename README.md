@@ -1,4 +1,4 @@
-# 🏛️ Signum Romanum
+#  Signum Romanum
 
 ## Archäologischer Stempel-Finder
 
@@ -9,7 +9,7 @@ Zeichenpositionen.
 
 ------------------------------------------------------------------------
 
-## 🔎 Funktionen
+##  Funktionen
 
 -   Filterung nach **Anzahl der Buchstaben**
 -   Eingabe **bekannter Buchstaben an bestimmten Positionen**
@@ -23,7 +23,7 @@ Zeichenpositionen.
 
 ------------------------------------------------------------------------
 
-## 🧭 Verwendung
+##  Verwendung
 
 1.  Wähle die gewünschte **Anzahl der Buchstaben**.\
 2.  Trage bekannte Buchstaben an den entsprechenden Positionen ein.\
@@ -36,7 +36,7 @@ startet.
 
 ------------------------------------------------------------------------
 
-## 💡 Hinweise
+##  Hinweise
 
 -   Auch unvollständige Angaben (z. B. nur Anfangsbuchstaben) helfen bei
     der Eingrenzung der Ergebnisse.\
@@ -45,7 +45,7 @@ startet.
 
 ------------------------------------------------------------------------
 
-## 📚 Zweck
+##  Zweck
 
 Das Tool unterstützt archäologische Forschung, Epigraphik und die
 schnelle Identifikation römischer Hersteller- oder Werkstattstempel.
