@@ -139,8 +139,11 @@
         </div>
     </div>
 
-    <script src="stamps.js">
+    <script src="stamps.js"></script>
     <script>
+        // Create a local constant from window.stamps
+        const stamps = window.stamps;
+        
         let currentLength = 7;
         let positions = Array(10).fill("");
         let frameFilter = 'alle';
