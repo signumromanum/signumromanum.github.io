@@ -204,11 +204,26 @@
         }
 
         // get Plate data algorithm       
-        // ranges: irregular page lengths
+        // Format: [startId, endId, pageName]
         const ranges = [
-          ["A1","A51"],  // 1
-          ["A52","A101"],  // 2
-          ["A102","B43"]   // 3
+          ["A1","A51","Polak 2000, Plate 1 (p. 454)"],  // 1
+          ["A52","A101","Polak 2000, Plate 2 (p. 455)"],  // 2
+          ["A102","B43","Polak 2000, Plate 3 (p. 456)"],   // 3
+          ["B44","C9*","Polak 2000, Plate 4 (p. 457)"],   // 4
+          ["C10","C60","Polak 2000, Plate 5 (p. 458)"],   // 5
+          ["C61","C111","Polak 2000, Plate 6 (p. 459)"],   // 6
+          ["C112","C160","Polak 2000, Plate 7 (p. 460)"],   // 7
+          ["C160*","F2",""]   // 8
+     //     ["F3","F53"],   // 9
+     //     ["F54","G36"],   // 10
+     //     ["G37","I34"],   // 11
+     //     ["I35","L37"],   // 12
+     //     ["L38","M50"],   // 13
+     //     ["M51","M98"],   // 14
+     //     ["M99","N11"],   // 15
+     //     ["N12","P46"],   // 16
+     //     ["P47","P93"],   // 17
+     //     ["B44","C9*"],   // 18
         ];
         
         // Normalize IDs: A1 → A0010, A1* → A0011
@@ -226,24 +241,24 @@
           return letter + String(base).padStart(4, "0");
         }
         
-        // Precompute page map only for your stamps
+        // Precompute page map
         const pageMap = new Map();
         stamps.forEach(stamp => {
           const norm = normalizeId(stamp.id);
         
           for (let i = 0; i < ranges.length; i++) {
-            const [start, end] = ranges[i];
+            const [start, end, pageName] = ranges[i];
             const startNorm = normalizeId(start);
             const endNorm = normalizeId(end);
         
             if (norm >= startNorm && norm <= endNorm) {
-              pageMap.set(norm, i + 1);
-              break; // found the page, no need to check further
+              pageMap.set(norm, pageName);
+              break;
             }
           }
         });
         
-        // Main function: getPlate
+        // Main function
         function getPlate(id) {
           return pageMap.get(normalizeId(id)) ?? null;
         }
