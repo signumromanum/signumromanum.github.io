@@ -206,39 +206,62 @@
         // get Plate data algorithm       
         // Format: [startId, endId, pageName]
         const ranges = [
-          ["A1","A51","Polak 2000, Plate 1 (p. 454)"],  // 1
-          ["A52","A101","Polak 2000, Plate 2 (p. 455)"],  // 2
-          ["A102","B43","Polak 2000, Plate 3 (p. 456)"],   // 3
-          ["B44","C9*","Polak 2000, Plate 4 (p. 457)"],   // 4
-          ["C10","C60","Polak 2000, Plate 5 (p. 458)"],   // 5
-          ["C61","C111","Polak 2000, Plate 6 (p. 459)"],   // 6
-          ["C112","C160","Polak 2000, Plate 7 (p. 460)"],   // 7
-          ["C160*","F2",""]   // 8
-     //     ["F3","F53"],   // 9
-     //     ["F54","G36"],   // 10
-     //     ["G37","I34"],   // 11
-     //     ["I35","L37"],   // 12
-     //     ["L38","M50"],   // 13
-     //     ["M51","M98"],   // 14
-     //     ["M99","N11"],   // 15
-     //     ["N12","P46"],   // 16
-     //     ["P47","P93"],   // 17
-     //     ["B44","C9*"],   // 18
+          ["POL-#1","POL-#7","Polak 2000, Plate 37 (p. 490)"],   // (1-7) pl.37
+          ["POL-A1","POL-A51","Polak 2000, Plate 1 (p. 454)"],  // 1
+          ["POL-A52","POL-A101","Polak 2000, Plate 2 (p. 455)"],  // 2
+          ["POL-A102","POL-B43","Polak 2000, Plate 3 (p. 456)"],   // 3
+          ["POL-B44","POL-C9*","Polak 2000, Plate 4 (p. 457)"],   // 4
+          ["POL-C10","POL-C60","Polak 2000, Plate 5 (p. 458)"],   // 5
+          ["POL-C61","POL-C111","Polak 2000, Plate 6 (p. 459)"],   // 6
+          ["POL-C112","POL-C160","Polak 2000, Plate 7 (p. 460)"],   // 7
+          ["POL-C160*","POL-F2","Polak 2000, Plate 8 (p. 461)"]   // 8
+          ["POL-F3","POL-F53","Polak 2000, Plate 9 (p. 462)"],   // 9
+          ["POL-F54","POL-G36","Polak 2000, Plate 10 (p. 463)"],   // 10
+          ["POL-G37","POL-I34","Polak 2000, Plate 11 (p. 464)"],   // 11
+          ["POL-I35","POL-L37","Polak 2000, Plate 12 (p. 465)"],   // 12
+          ["POL-L38","POL-M50","Polak 2000, Plate 13 (p. 466)"],   // 13
+          ["POL-M51","POL-M98","Polak 2000, Plate 14 (p. 467)"],   // 14
+          ["POL-M99","POL-N11","Polak 2000, Plate 15 (p. 468)"],   // 15
+          ["POL-N12","POL-P46","Polak 2000, Plate 16 (p. 469)"],   // 16
+          ["POL-P47","POL-P93","Polak 2000, Plate 17 (p. 470)"],   // 17
+          ["POL-P94","POL-P142","Polak 2000, Plate 18 (p. 471)"],   // 18
+          ["POL-P143","POL-R32","Polak 2000, Plate 19 (p. 472)"],   // 19
+          ["POL-R33","POL-S43","Polak 2000, Plate 20 (p. 473)"],   // 20
+          ["POL-S44","POL-S93*","Polak 2000, Plate 21 (p. 474)"],   // 21
+          ["POL-S94","POL-S144","Polak 2000, Plate 22 (p. 475)"],   // 22
+          ["POL-S145","POL-T6","Polak 2000, Plate 23 (p. 476)"],   // 23
+          ["POL-T7","POL-V36","Polak 2000, Plate 24 (p. 477)"],   // 24
+          ["POL-V37","POL-V82","Polak 2000, Plate 25 (p. 478)"],   // 25
+          ["POL-V83","POL-X38","Polak 2000, Plate 26 (p. 479)"],   // 26
+          ["POL-X39","POL-X90","Polak 2000, Plate 27 (p. 480)"],   // 27
+          ["POL-X91","POL-Y40","Polak 2000, Plate 28 (p. 481)"],   // 28
+          ["POL-Y41","POL-Y92","Polak 2000, Plate 29 (p. 482)"],   // 29
+          ["POL-Y93","POL-Y144","Polak 2000, Plate 30 (p. 483)"],   // 30
+          ["POL-Y145","POL-Y196","Polak 2000, Plate 31 (p. 484)"],   // 31
+          ["POL-Y197","POL-Y247","Polak 2000, Plate 32 (p. 485)"],   // 32
+          ["POL-Y248","POL-Y299","Polak 2000, Plate 33 (p. 486)"],   // 33
+          ["POL-Y300","POL-Y351","Polak 2000, Plate 34 (p. 487)"],   // 34
+          ["POL-Y352","POL-Z27","Polak 2000, Plate 35 (p. 488)"],   // 35
+          ["POL-Z28","POL-Z79","Polak 2000, Plate 36 (p. 489)"],   // 36
+          ["POL-Z80","POL-Z115","Polak 2000, Plate 37 (p. 490)"]   // 37
         ];
         
-        // Normalize IDs: A1 → A0010, A1* → A0011
+        // Normalize IDs: XXX-X1* → XXX-X000N
         function normalizeId(id) {
-          const letter = id[0];
-          const match = id.slice(1).match(/^(\d+)(\*)?$/);
-          if (!match) return letter + "0000";
+          if (!id) return null;
         
-          const number = parseInt(match[1], 10);
-          const suffix = match[2]; // "" or "*"
+          // Match pattern: 3 letters - A-Z or # + 1-3 digits + optional *
+          const match = id.match(/^([A-Z]{3})-([A-Z#])(\d{1,3})(\*)?$/i);
+          if (!match) return id; // fallback if format doesn't match
         
-          let base = number * 10;
-          if (suffix === "*") base += 1;
+          const [_, prefix, letter, numStr, star] = match;
+          const num = parseInt(numStr, 10);
         
-          return letter + String(base).padStart(4, "0");
+          let base = num * 10;  // leave room for *
+          if (star === "*") base += 1;
+        
+          // Return normalized string for sorting/comparison
+          return `${prefix}-${letter}${String(base).padStart(4, "0")}`;
         }
         
         // Precompute page map
@@ -414,7 +437,7 @@
                         <span class="text-sm font-semibold text-amber-800">Katalog-Nr: ${stamp.id}</span>
                         <div class="flex items-center gap-2">
                             ${matchBadge}
-                            <span class="text-xs bg-amber-200 text-amber-900 px-2 py-1 rounded-full">Platte ${getPlate(stamp.id)}</span>
+                            <span class="text-xs bg-amber-200 text-amber-900 px-2 py-1 rounded-full">${getPlate(stamp.id)}</span>
                         </div>
                     </div>
                 </div>
@@ -437,7 +460,7 @@
         function openModal(stamp) {
             document.getElementById('modalTitle').textContent = `Stempel ${stamp.id}`;
             document.getElementById('modalText').innerHTML = `Schriftzug: <span class="font-samian font-bold text-xl">${stamp.text}</span>`;
-            document.getElementById('modalPlate').textContent = `Platte ${getPlate(stamp.id)}`;
+            document.getElementById('modalPlate').textContent = `${getPlate(stamp.id)}`;
             
             const modalImage = document.getElementById('modalImage');
             const placeholder = document.getElementById('modalPlaceholder');
