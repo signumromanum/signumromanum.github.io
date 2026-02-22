@@ -435,7 +435,7 @@
             card.innerHTML = `
                 <div class="bg-gradient-to-r from-amber-100 to-orange-100 p-4 border-b-2 border-amber-200">
                     <div class="flex justify-between items-center">
-                        <span class="text-sm font-semibold text-amber-800">Katalog-Nr: ${stamp.id}</span>
+                        <span class="text-sm font-semibold text-amber-800">Katalog-Nr: ${stamp.id.replace("#","")}</span>
                         <div class="flex items-center gap-2">
                             ${matchBadge}
                             <span class="text-xs bg-amber-200 text-amber-900 px-2 py-1 rounded-full">${getPlate(stamp.id)}</span>
@@ -459,7 +459,7 @@
 
         // Modal öffnen
         function openModal(stamp) {
-            document.getElementById('modalTitle').textContent = `Stempel ${stamp.id}`;
+            document.getElementById('modalTitle').textContent = `Stempel ${stamp.id.replace("#","")}`;
             document.getElementById('modalText').innerHTML = `Schriftzug: <span class="font-samian font-bold text-xl">${stamp.text}</span>`;
             document.getElementById('modalPlate').textContent = `${getPlate(stamp.id)}`;
             
