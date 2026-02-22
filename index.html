@@ -246,21 +246,22 @@
           ["POL-Z80","POL-Z115","Polak 2000, Plate 37 (p. 490)"]   // 37
         ];
         
-        // Normalize IDs: XXX-X1* → XXX-X000N
+        // Normalize IDs: XXX-X1*** → XXX-X000N + * increments
         function normalizeId(id) {
           if (!id) return null;
         
-          // Match pattern: 3 letters - A-Z or # + 1-3 digits + optional *
-          const match = id.match(/^([A-Z]{3})-([A-Z#])(\d{1,3})(\*)?$/i);
+          // Match: 3 letters - A-Z or # + 1-3 digits + optional *
+          const match = id.match(/^([A-Z]{3})-([A-Z#])(\d{1,3})(\*+)?$/i);
           if (!match) return id; // fallback if format doesn't match
         
-          const [_, prefix, letter, numStr, star] = match;
+          const [_, prefix, letter, numStr, stars] = match;
           const num = parseInt(numStr, 10);
         
-          let base = num * 10;  // leave room for *
-          if (star === "*") base += 1;
+          // Each * adds +1
+          const starCount = stars ? stars.length : 0;
+          const base = num * 10 + starCount;
         
-          // Return normalized string for sorting/comparison
+          // Normalized string for ordering
           return `${prefix}-${letter}${String(base).padStart(4, "0")}`;
         }
         
