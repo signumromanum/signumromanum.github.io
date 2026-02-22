@@ -132,7 +132,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
                         <p class="text-gray-600 mb-2">Stempelbild</p>
-                        <p class="text-sm text-gray-500">(Bild derzeit aus urheberrechtlichen Gr&uuml;nden nicht verf&uuml;gbar)</p>
+                        <p class="text-sm text-gray-500">(Bild derzeit nicht verf&uuml;gbar)</p>
                     </div>
                 </div>
             </div>
@@ -287,6 +287,14 @@
           return pageMap.get(normalizeId(id)) ?? null;
         }
 
+        // Hilfsfkt existiert Datei?
+        function fileExists(url, callback) {
+          const img = new Image();
+          img.onload = () => callback(true);   // file exists
+          img.onerror = () => callback(false); // file missing
+          img.src = url;
+        }
+        
         // Tastatur-Navigation
         function handleKeyDown(index, e) {
             if (e.key === 'Backspace' && !positions[index] && index > 0) {
@@ -466,14 +474,16 @@
             const modalImage = document.getElementById('modalImage');
             const placeholder = document.getElementById('modalPlaceholder');
             
-            if (stampImages[stamp.id]) {
-                modalImage.src = stampImages[stamp.id];
+            fileExists(`img/${stamp.id}.png`, exists => {
+              if (exists) {
+                modalImage.src = `img/${stamp.id}.png`;
                 modalImage.classList.remove('hidden');
                 placeholder.classList.add('hidden');
-            } else {
+              } else {
                 modalImage.classList.add('hidden');
                 placeholder.classList.remove('hidden');
-            }
+              }
+            });
             
             document.getElementById('imageModal').classList.remove('hidden');
         }
