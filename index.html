@@ -475,9 +475,9 @@
             const placeholder = document.getElementById('modalPlaceholder');
 
             
-            fileExists(`img/${stamp.id}.png`, exists => {
+            fileExists(`img/${stamp.id.replace('**','b').replace('*','a')}.png`, exists => {
               if (exists) {
-                modalImage.src = `img/${stamp.id}.png`;
+                modalImage.src = `img/${stamp.id.replace('**','b').replace('*','a')}.png`;
                 modalImage.classList.remove('hidden');
                 placeholder.classList.add('hidden');
               } else {
