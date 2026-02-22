@@ -205,7 +205,7 @@
 
         // get Plate data algorithm       
         // Format: [startId, endId, pageName]
-        const ranges = [
+        const rangesPlates = [
           ["POL-#1","POL-#7","Polak 2000, Plate 37 (p. 490)"],   // (1-7) pl.37
           ["POL-A1","POL-A51","Polak 2000, Plate 1 (p. 454)"],  // 1
           ["POL-A52","POL-A101","Polak 2000, Plate 2 (p. 455)"],  // 2
@@ -246,46 +246,55 @@
           ["POL-Z80","POL-Z115","Polak 2000, Plate 37 (p. 490)"]   // 37
         ];
         
-        // Normalize IDs: XXX-X1*** → XXX-X000N + * increments
+        const rangesSrc = [
+          ["POL-#1","POL-Z115","https://repository.ubn.ru.nl/bitstream/handle/2066/198401/198401pub.pdf?sequence=1&isAllowed=y"]
+        ];
+        
+        // --- Normalize IDs: XXX-X1* → sortable string ---
         function normalizeId(id) {
           if (!id) return null;
         
-          // Match: 3 letters - A-Z or # + 1-3 digits + optional *
+          // Match 3 letters - A-Z or # + 1-3 digits + optional *
           const match = id.match(/^([A-Z]{3})-([A-Z#])(\d{1,3})(\*+)?$/i);
           if (!match) return id; // fallback if format doesn't match
         
           const [_, prefix, letter, numStr, stars] = match;
           const num = parseInt(numStr, 10);
-        
-          // Each * adds +1
           const starCount = stars ? stars.length : 0;
-          const base = num * 10 + starCount;
         
-          // Normalized string for ordering
-          return `${prefix}-${letter}${String(base).padStart(4, "0")}`;
+          // base number *10 + number of stars
+          return `${prefix}-${letter}${String(num * 10 + starCount).padStart(4, "0")}`;
         }
         
-        // Precompute page map
-        const pageMap = new Map();
-        stamps.forEach(stamp => {
-          const norm = normalizeId(stamp.id);
+        // --- Create a page map from a set of ranges ---
+        function createPageMap(ranges) {
+          const map = new Map();
         
-          for (let i = 0; i < ranges.length; i++) {
-            const [start, end, pageName] = ranges[i];
-            const startNorm = normalizeId(start);
-            const endNorm = normalizeId(end);
+          stamps.forEach(stamp => {
+            const norm = normalizeId(stamp.id);
         
-            if (norm >= startNorm && norm <= endNorm) {
-              pageMap.set(norm, pageName);
-              break;
+            for (let i = 0; i < ranges.length; i++) {
+              const [start, end, pageName] = ranges[i];
+              const startNorm = normalizeId(start);
+              const endNorm = normalizeId(end);
+        
+              if (norm >= startNorm && norm <= endNorm) {
+                map.set(norm, pageName);
+                break;
+              }
             }
-          }
-        });
+          });
         
-        // Main function
-        function getPlate(id) {
+          return map;
+        }
+        
+        // --- Get plate/page name from a map ---
+        function getPage(id, pageMap) {
           return pageMap.get(normalizeId(id)) ?? null;
         }
+
+        const pageMapPlates = createPageMap(rangesPlates);
+        const pageMapSrc = createPageMap(rangesSrc);
 
         // Hilfsfkt existiert Datei?
         function fileExists(url, callback) {
@@ -446,7 +455,7 @@
                         <span class="text-sm font-semibold text-amber-800">Katalog-Nr: ${stamp.id.replace("#","")}</span>
                         <div class="flex items-center gap-2">
                             ${matchBadge}
-                            <span class="text-xs bg-amber-200 text-amber-900 px-2 py-1 rounded-full">${getPlate(stamp.id)}</span>
+                            <span class="text-xs bg-amber-200 text-amber-900 px-2 py-1 rounded-full">${getPage(stamp.id, pageMapPlates)}</span>
                         </div>
                     </div>
                 </div>
@@ -469,7 +478,7 @@
         function openModal(stamp) {
             document.getElementById('modalTitle').textContent = `Stempel ${stamp.id.replace("#","")}`;
             document.getElementById('modalText').innerHTML = `Schriftzug: <span class="font-samian font-bold text-xl">${stamp.text}</span>`;
-            document.getElementById('modalPlate').textContent = `${getPlate(stamp.id)}`;
+            document.getElementById('modalPlate').textContent = `${getPage(stamp.id, pageMapPlates)}`;
             
             const modalImage = document.getElementById('modalImage');
             const placeholder = document.getElementById('modalPlaceholder');
