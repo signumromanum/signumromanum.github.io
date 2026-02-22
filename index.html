@@ -474,19 +474,20 @@
             const modalImage = document.getElementById('modalImage');
             const placeholder = document.getElementById('modalPlaceholder');
 
-            modalImage.classList.add('hidden');
-            placeholder.classList.add('hidden');
             
             fileExists(`img/${stamp.id}.png`, exists => {
               if (exists) {
                 modalImage.src = `img/${stamp.id}.png`;
                 modalImage.classList.remove('hidden');
+                placeholder.classList.add('hidden');
               } else {
                 placeholder.classList.remove('hidden');
+                modalImage.classList.add('hidden');
               }
+                
+              document.getElementById('imageModal').classList.remove('hidden');
             });
             
-            document.getElementById('imageModal').classList.remove('hidden');
         }
 
         // Modal schließen
