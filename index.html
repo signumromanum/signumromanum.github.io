@@ -795,6 +795,54 @@
             filterStamps();
         }
 
+        // get Plate data algorithm       
+        // ranges: irregular page lengths
+        const ranges = [
+          ["A1","A51"],  // 1
+          ["A52","A101"],  // 2
+          ["A102","B43"]   // 3
+        ];
+        
+        // --- Step 1: Normalize IDs ---
+        // A1 → A0010, A1* → A0011
+        function normalizeId(id) {
+          if (!id) return null;
+        
+          const letter = id[0]; // first letter
+          const match = id.slice(1).match(/^(\d+)(\*)?$/);
+          if (!match) return letter + "0000";
+        
+          const number = parseInt(match[1], 10); // numeric part
+          const suffix = match[2];               // "" or "*"
+        
+          let base = number * 10;
+          if (suffix === "*") base += 1;
+        
+          return letter + String(base).padStart(4, "0"); // e.g., "A0010", "A0011"
+        }
+        
+        // --- Step 2: Precompute index map for O(1) lookup ---
+        const indexMap = new Map();
+        stamps.forEach((stamp, i) => indexMap.set(normalizeId(stamp.id), i));
+        
+        // --- Step 3: Precompute page map for O(1) page lookup ---
+        const pageMap = new Map();
+        ranges.forEach((range, pageIndex) => {
+          const [start, end] = range;
+          const startIndex = indexMap.get(normalizeId(start));
+          const endIndex = indexMap.get(normalizeId(end));
+        
+          for (let i = startIndex; i <= endIndex; i++) {
+            const stampId = stamps[i].id;
+            pageMap.set(normalizeId(stampId), pageIndex + 1);
+          }
+        });
+        
+        // --- Step 4: Main function ---
+        function getPlate(id) {
+          return pageMap.get(normalizeId(id)) ?? null;
+        }
+
         // Tastatur-Navigation
         function handleKeyDown(index, e) {
             if (e.key === 'Backspace' && !positions[index] && index > 0) {
@@ -946,7 +994,7 @@
                         <span class="text-sm font-semibold text-amber-800">Katalog-Nr: ${stamp.id}</span>
                         <div class="flex items-center gap-2">
                             ${matchBadge}
-                            <span class="text-xs bg-amber-200 text-amber-900 px-2 py-1 rounded-full">Platte ${stamp.plate}</span>
+                            <span class="text-xs bg-amber-200 text-amber-900 px-2 py-1 rounded-full">Platte ${getPlate(stamp.id)}</span>
                         </div>
                     </div>
                 </div>
@@ -969,7 +1017,7 @@
         function openModal(stamp) {
             document.getElementById('modalTitle').textContent = `Stempel ${stamp.id}`;
             document.getElementById('modalText').innerHTML = `Schriftzug: <span class="font-samian font-bold text-xl">${stamp.text}</span>`;
-            document.getElementById('modalPlate').textContent = `Platte ${stamp.plate}`;
+            document.getElementById('modalPlate').textContent = `Platte ${getPlate(stamp.id)}`;
             
             const modalImage = document.getElementById('modalImage');
             const placeholder = document.getElementById('modalPlaceholder');
