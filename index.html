@@ -803,42 +803,39 @@
           ["A102","B43"]   // 3
         ];
         
-        // --- Step 1: Normalize IDs ---
-        // A1 → A0010, A1* → A0011
+        // Normalize IDs: A1 → A0010, A1* → A0011
         function normalizeId(id) {
-          if (!id) return null;
-        
-          const letter = id[0]; // first letter
+          const letter = id[0];
           const match = id.slice(1).match(/^(\d+)(\*)?$/);
           if (!match) return letter + "0000";
         
-          const number = parseInt(match[1], 10); // numeric part
-          const suffix = match[2];               // "" or "*"
+          const number = parseInt(match[1], 10);
+          const suffix = match[2]; // "" or "*"
         
           let base = number * 10;
           if (suffix === "*") base += 1;
         
-          return letter + String(base).padStart(4, "0"); // e.g., "A0010", "A0011"
+          return letter + String(base).padStart(4, "0");
         }
         
-        // --- Step 2: Precompute index map for O(1) lookup ---
-        const indexMap = new Map();
-        stamps.forEach((stamp, i) => indexMap.set(normalizeId(stamp.id), i));
-        
-        // --- Step 3: Precompute page map for O(1) page lookup ---
+        // Precompute page map only for your stamps
         const pageMap = new Map();
-        ranges.forEach((range, pageIndex) => {
-          const [start, end] = range;
-          const startIndex = indexMap.get(normalizeId(start));
-          const endIndex = indexMap.get(normalizeId(end));
+        stamps.forEach(stamp => {
+          const norm = normalizeId(stamp.id);
         
-          for (let i = startIndex; i <= endIndex; i++) {
-            const stampId = stamps[i].id;
-            pageMap.set(normalizeId(stampId), pageIndex + 1);
+          for (let i = 0; i < ranges.length; i++) {
+            const [start, end] = ranges[i];
+            const startNorm = normalizeId(start);
+            const endNorm = normalizeId(end);
+        
+            if (norm >= startNorm && norm <= endNorm) {
+              pageMap.set(norm, i + 1);
+              break; // found the page, no need to check further
+            }
           }
         });
         
-        // --- Step 4: Main function ---
+        // Main function: getPlate
         function getPlate(id) {
           return pageMap.get(normalizeId(id)) ?? null;
         }
