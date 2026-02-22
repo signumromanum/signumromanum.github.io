@@ -1,4 +1,4 @@
-const stamps = [
+window.stamps = [
             { id: 'A1', text: 'OFABITI'},
             { id: 'A2', text: '<O>FABITI'},
             { id: 'A3', text: 'OFABITI'},
