@@ -139,7 +139,7 @@
             <div class="p-6">
                 <div class="rounded-lg text-center">
                     <div>
-                        <p class="text-gray-600 mb-2" id="modalSource">Quelle</p>
+                        <p class="text-gray-600 mb-2" id="modalSource" style="text-decoration: underline;">Quelle</p>
                     </div>
                 </div>
             </div>
@@ -254,7 +254,7 @@
         ];
         
         const rangesSrc = [
-          ["POL-#1","POL-Z115","<a href='https://repository.ubn.ru.nl/bitstream/handle/2066/198401/198401pub.pdf?sequence=1&isAllowed=y'>Polak, M. (2000). South Gaulish Terra Sigillata with Potters’ Stamps from Vechten.</a>"]
+          ["POL-#1","POL-Z115","<a href='https://repository.ubn.ru.nl/bitstream/handle/2066/198401/198401pub.pdf?sequence=1&isAllowed=y' target='_blank'>Polak, M. (2000). South Gaulish Terra Sigillata with Potters’ Stamps from Vechten.</a>"]
         ];
         
         // --- Normalize IDs: XXX-X1* → sortable string ---
@@ -486,7 +486,7 @@
             document.getElementById('modalTitle').textContent = `Stempel ${stamp.id.replace("#","")}`;
             document.getElementById('modalText').innerHTML = `Schriftzug: <span class="font-samian font-bold text-xl">${stamp.text}</span>`;
             document.getElementById('modalPlate').textContent = `${getPage(stamp.id, pageMapPlates)}`;
-            document.getElementById('modalSource').innterHTML = `${getPage(stamp.id, pageMapSrc)}`;
+            document.getElementById('modalSource').innerHTML = `${getPage(stamp.id, pageMapSrc)}`;
             
             const modalImage = document.getElementById('modalImage');
             const placeholder = document.getElementById('modalPlaceholder');
