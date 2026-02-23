@@ -305,10 +305,21 @@
 
         // Hilfsfkt existiert Datei?
         function fileExists(url, callback) {
-          const img = new Image();
-          img.onload = () => callback(true);   // file exists
-          img.onerror = () => callback(false); // file missing
-          img.src = url;
+            if (stampImages[url] !== undefined) {
+                callback(stampImages[url]);
+                return;
+            }
+        
+            const img = new Image();
+            img.onload = () => {
+                stampImages[url] = true;
+                callback(true);
+            };
+            img.onerror = () => {
+                stampImages[url] = false;
+                callback(false);
+            };
+            img.src = url;
         }
         
         // Tastatur-Navigation
