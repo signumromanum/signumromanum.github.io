@@ -511,7 +511,7 @@
 
         // Modal öffnen
         function openModal(stamp) {
-            document.getElementById('modalTitle').textContent = `Stempel <small>${stamp.id.replace("#","").replace("-","</small> ")}`;
+            document.getElementById('modalTitle').innerHTML = `Stempel <small>${stamp.id.replace("#","").replace("-","</small> ")}`;
             document.getElementById('modalText').innerHTML = `Schriftzug: <span class="font-samian font-bold text-xl">${escapeHtml(stamp.text)}</span>`;
             document.getElementById('modalPlate').textContent = `${getPage(stamp.id, pageMapPlates)}`;
             document.getElementById('modalSource').innerHTML = `${getPage(stamp.id, pageMapSrc)}`;
