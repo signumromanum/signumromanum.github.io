@@ -355,8 +355,15 @@
                 
                 // Sortieren
                 filtered.sort((a, b) => {
+                    // Exakte Längenübereinstimmung bevorzugen
+                    const aExact = a.text.length === currentLength ? 1 : 0;
+                    const bExact = b.text.length === currentLength ? 1 : 0;
+                    if (aExact !== bExact) return bExact - aExact;
+                
+                    // Danach dein bestehendes Ranking
                     if (a.score !== b.score) return b.score - a.score;
                     if (a.containsScore !== b.containsScore) return b.containsScore - a.containsScore;
+                
                     return 0;
                 });
             }
